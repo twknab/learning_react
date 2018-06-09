@@ -6,19 +6,72 @@ import ReactDOM from 'react-dom'; // imports React DOM
 const element = <h1> Hello, world </h1>;
 // Note: this element does not get invoked
 
+// This is a ES6 class, which will be used in our tick() function. Notice that every component class is a child of React.Component, and also has a render() method wich runs, and inside a return() statement which includes your components.
+class Clock extends React.Component {
+  constructor(props) {
+    super(props); // necessary to pass props to base constructor
+    // Our state property instantly gives our clock a time:
+    // however, once it mounts, componentDidMount() will run,
+    // which will update the DOM ever second
+    this.state = {date: new Date()};
+  }
+
+  // These special methods will run when component output is rendered to DOM:
+  // Let's setup a timer here for our clock:
+  // Will build timer ID and run tick every 1 second
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+
+  }
+
+  // Will tear down the timerID
+  componentWillUnmount() {
+    clearInterval(this.timerID); // will clear the set interval function
+  }
+
+  // Will set current time
+  tick() {
+    // Set State is a built-in method to update this.state:
+    // NEVER MODIFY STATE DIRECTLY
+    // React uses immutable objects so you can't!
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  // Here's our render method to render the component
+  render() {
+    return (
+      <h2> It is {this.state.date.toLocaleTimeString()}.</h2>
+    );
+  }
+}
+// See https://reactjs.org/docs/state-and-lifecycle.html#converting-a-function-to-a-class for converting a function to a class:
+
 // We can use functions to create a Timer for example:
 // Here's how we can write a function in JSX:
 function tick() {
   const element = ( 
     <div>
-    <h1> Hello, world! </h1> 
-    <Welcome name="Tim"/>
-    <WelcomeAgain name="TK"/>
-    <HeadlineComponent/>
-    <hr/>
-    <h2> It is { new Date().toLocaleTimeString() }.</h2>
-    <hr/>
-    <SayHello5Times/>
+      <h1> Hello, world! </h1> 
+      <h2>Call a few components:</h2>
+      <hr/>
+      <Welcome name="Tim"/>
+      <WelcomeAgain name="TK"/>
+      <HeadlineComponent/>
+      <hr/>
+      <h2>Creating a clock:</h2>
+      <Clock />
+      <hr/>
+      <h2>Re-using components:</h2>
+      <SayHello5Times/>
+      <hr/>
+      <h2>Playing with states:</h2>
+      <Toggle />
+      <hr/>
     </div>
   );
   // Note this is bad juju when rendering to DOM in interval,
@@ -56,6 +109,7 @@ function Hello(props) {
 function SayHello5Times() {
   return (
     <div>
+        <Hello name="t" />
         <Hello name="tim" />
         <Hello name="Tim" />
         <Hello name="TIM" />
@@ -102,6 +156,32 @@ function Comment(props) {
       </div>
     </div>
   );
+}
+
+// Let's create a button which can handle some click events:
+class Toggle extends React.Component {
+  // Our constructor:
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn : true};
+    // Need to setup a binding to make `this` work on callback:
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+
+  // Our HandeClick method:
+  handleClick() {
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
+  }
+
+  // Our render method:
+  render() {
+    return (
+      <button onClick={this.handleClick}>{this.state.isToggleOn ? 'ON' : 'OFF'}</button>
+    )
+  }
 }
 
 
