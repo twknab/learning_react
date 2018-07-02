@@ -1,0 +1,58 @@
+h5 {
+  line-height: 1em;
+  margin-bottom: 0px;
+}
+
+body {
+  background-color:rgb(51, 51, 51);
+  color: white;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.Board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.cell {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+}
+
+.row {
+  display: block;
+  height: 50px
+}
+
+.row:nth-child(odd) > .cell:nth-child(odd) {
+  background-color: rgb(54, 204, 245);
+}
+.row:nth-child(odd) > .cell:nth-child(even) {
+  background-color: rgb(78, 78, 78);
+}
+
+.row:nth-child(even) > .cell:nth-child(even) {
+  background-color: rgb(54, 204, 245);
+}
+.row:nth-child(even) > .cell:nth-child(odd) {
+  background-color: rgb(78, 78, 78);
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
